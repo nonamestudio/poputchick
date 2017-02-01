@@ -1,6 +1,7 @@
 package com.noname.poputchick;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,6 @@ public class MainActivity extends Activity {
     private TestUsersAdapter usersArray;
     private ArrayList<TestData> usersList;
     private Button getUsersBtn;
-    private Button addUser;
 
 
 
@@ -42,10 +42,6 @@ public class MainActivity extends Activity {
     private void initTest() {
         usersList = new ArrayList<>();
 
-//        for (int i = 0; i < 10; i++) {
-//            TestData td = new TestData(Integer.toString(i),"Pasha","pavel@uee.com","+7777777");
-//            usersList.add(td);
-//        }
         usersArray = new TestUsersAdapter(this, usersList);
 
         users = (ListView) findViewById(R.id.listView);
@@ -59,48 +55,35 @@ public class MainActivity extends Activity {
             }
         });
 
-        addUser = (Button) findViewById(R.id.btn_add);
-        addUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewUser();
-            }
-        });
+
 
     }
 
-    private void addNewUser() {
-        TestData td  = new TestData();
+    public void addNewUser(View view) {
 
-        TestApp.getApi().addUser(td).enqueue(new Callback<TestData>() {
-            @Override
-            public void onResponse(Call<TestData> call, Response<TestData> response) {
+        Intent intent = new Intent(this, AddUserActivity.class);
+        startActivity(intent);
 
-            }
+    }
 
-            @Override
-            public void onFailure(Call<TestData> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "An error occurred during connection to DB", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void editUser(View view){
+        Intent intent = new Intent(this, AddUserActivity.class);
 
+        startActivity(intent);
     }
 
     private void connectToDB() {
-
-//        try {
-//            retrofit2.Response<List<TestData>> response = TestApp.getApi().getUsers().execute();
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-
-
+        usersList.clear();
+        usersArray.notifyDataSetChanged();
 
         TestApp.getApi().getUsers().enqueue(new Callback<List<TestData>>() {
             @Override
             public void onResponse(Call<List<TestData>> call, Response<List<TestData>> response) {
-                usersList.addAll(response.body());
-                usersArray.notifyDataSetChanged();
+                if(response.body().size() > 0) {
+
+                    usersList.addAll(response.body());
+                    usersArray.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -109,5 +92,9 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    public void conn(){
+        connectToDB();
     }
 }

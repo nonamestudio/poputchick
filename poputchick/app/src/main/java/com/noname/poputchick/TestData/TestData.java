@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class TestData {
 
-    @SerializedName("_id")
+    @SerializedName("id")
     @Expose
     private String id;
 
@@ -21,12 +21,6 @@ public class TestData {
     @Expose
     private String phone;
 
-//    public TestData (String id, String name, String email, String phone){
-//        this.id = id;
-//        this.name = name;
-//        this.email = email;
-//        this.phone = phone;
-//    }
 
     /**
      * @return id
@@ -36,6 +30,7 @@ public class TestData {
     }
 
     /**
+     *
      * @param id
      */
     public void setId(String id) {

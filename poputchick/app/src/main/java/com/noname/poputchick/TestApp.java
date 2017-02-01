@@ -18,7 +18,7 @@ public class TestApp extends Application {
         super.onCreate();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://poputchick.herokuapp.com/")//base address part, like http://google.com/
+                .baseUrl(getString(R.string.local_url))//base address part, like http://google.com/
                 .addConverterFactory(GsonConverterFactory.create())// Converter from JSON to objects
                 .build();
 
