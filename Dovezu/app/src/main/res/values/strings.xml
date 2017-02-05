@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Dovezu</string>
+    <string name="localProfile">Dovezu Account</string>
+    <string name="facebookProfile">Facebook</string>
+    <string name="twitterProfile">Twitter</string>
+    <string name="googleProfile">Google</string>
+    <string name="vkontakteProfile">Vkontakte</string>
 </resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.oromostudio.dovezu.ProfileActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <include
+            android:id="@+id/localLayoutInclude"
+            layout="@layout/local_profile_layout"/>
+
+        <include
+            android:id="@+id/facebookLayoutInclude"
+            layout="@layout/facebook_profile_layout"/>
+
+        <include
+            android:id="@+id/twitterLayoutInclude"
+            layout="@layout/twitter_profile_layout"/>
+        <include
+            android:id="@+id/googleLayoutInclude"
+            layout="@layout/google_profile_layout"/>
+
+        <include
+            android:id="@+id/vkontakteLayoutInclude"
+            layout="@layout/vkontakte_profile_layout"/>
+
+    </ScrollView>
+</RelativeLayout>
