@@ -1,8 +1,24 @@
 <resources>
     <string name="app_name">Dovezu</string>
+
     <string name="localProfile">Dovezu Account</string>
     <string name="facebookProfile">Facebook</string>
     <string name="twitterProfile">Twitter</string>
     <string name="googleProfile">Google</string>
     <string name="vkontakteProfile">Vkontakte</string>
+
+    <string name="loginEmail">Email</string>
+    <string name="loginPassword">Password</string>
+
+    <string name="loginWindow">LOGIN</string>
+    <string name="profileWindow">PROFILE</string>
+
+    <string name="loginBtn">Login</string>
+    <string name="signupBtn">SignUp</string>
+    <string name="haveNoAccount">Do not have account yet?</string>
+    <string name="or">or</string>
+
+
+    <string name="serverMain">poputchick-server</string>
+    <string name="loginMessage">Please, login</string>
 </resources>

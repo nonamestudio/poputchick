@@ -10,32 +10,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.oromostudio.dovezu.ProfileActivity">
 
-
-    <ScrollView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="wrap_content"
+        android:text="@string/profileWindow"/>
 
-        <include
-            android:id="@+id/localLayoutInclude"
-            layout="@layout/local_profile_layout"/>
+    <include
+        android:id="@+id/localLayoutInclude"
+        layout="@layout/local_profile_layout"/>
 
-        <include
-            android:id="@+id/facebookLayoutInclude"
-            layout="@layout/facebook_profile_layout"/>
+    <include
+        android:id="@+id/facebookLayoutInclude"
+        layout="@layout/facebook_profile_layout"/>
 
-        <include
-            android:id="@+id/twitterLayoutInclude"
-            layout="@layout/twitter_profile_layout"/>
-        <include
-            android:id="@+id/googleLayoutInclude"
-            layout="@layout/google_profile_layout"/>
+    <include
+        android:id="@+id/twitterLayoutInclude"
+        layout="@layout/twitter_profile_layout"/>
+    <include
+        android:id="@+id/googleLayoutInclude"
+        layout="@layout/google_profile_layout"/>
 
-        <include
-            android:id="@+id/vkontakteLayoutInclude"
-            layout="@layout/vkontakte_profile_layout"/>
+    <include
+        android:id="@+id/vkontakteLayoutInclude"
+        layout="@layout/vkontakte_profile_layout"/>
 
-    </ScrollView>
 </RelativeLayout>
