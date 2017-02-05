@@ -23,28 +23,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
     }
 
     public void connectToServer(View view){
 
-        DovezuApp.getAPI().getProfile().enqueue(new Callback<ProfileModel>() {
+        DovezuApp.getAPI().checkAuth().enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                if (response.body().toString().compareTo(getString(R.string.loginMessage)) == 0){
-                    intent = new Intent(MainActivity.this, LoginActivity.class);
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.body().toString().compareTo(getString(R.string.successLogin)) == 0){
+                    intent = new Intent(MainActivity.this, ProfileActivity.class);
                     startActivity(intent);
                 } else{
-                    intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
             }
 
             @Override
-            public void onFailure(Call<ProfileModel> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Failure to connect to server", Toast.LENGTH_SHORT).show();
+                Log.d("Error", t.getMessage());
             }
         });
     }

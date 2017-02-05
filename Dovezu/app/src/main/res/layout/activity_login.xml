@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
@@ -10,120 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.oromostudio.dovezu.LoginActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/loginWindow"
-        android:id="@+id/loginWindowName"/>
+    <include android:id="@+id/loginLayout" layout="@layout/login_layout"/>
+    <include android:id="@+id/registerLayout" layout="@layout/register_layout"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loginPassword"
-        android:layout_alignTop="@+id/loginPasswordET"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loginEmail"
-        android:layout_alignTop="@+id/loginEmailET"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="20dp"
-        android:id="@+id/loginEmailET"
-        android:layout_marginTop="59dp"
-        android:layout_below="@+id/loginWindowName"
-        android:layout_alignLeft="@+id/loginPasswordET"
-        android:layout_alignStart="@+id/loginPasswordET" />
-
-    <EditText
-        android:layout_height="20dp"
-        android:id="@+id/loginPasswordET"
-        android:layout_marginTop="79dp"
-        android:layout_width="250dp"
-        android:layout_below="@+id/loginEmailET"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="19dp"
-        android:layout_marginEnd="19dp" />
-
-    <TextView
-        android:text="@string/haveNoAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loginBtn"
-        android:layout_marginTop="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:id="@+id/signupLink"
-        android:text="@string/signupBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginBtn"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="200dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="20sp" />
-
-    <Button
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
-        android:id="@+id/loginBtn"
-        android:layout_below="@+id/loginPasswordET"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:text="@string/or"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/signupLink"
-        android:layout_marginLeft="170dp"
-        android:textSize="20dp"
-        android:onClick="onSignupPage"/>
-
-    <Button
-        android:id="@+id/facebookBtn"
-        android:text="@string/facebookProfile"
-        android:layout_marginLeft="20dp"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/signupLink"/>
-    <Button
-        android:id="@+id/twitterBtn"
-        android:text="@string/twitterProfile"
-        android:layout_marginLeft="90dp"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="80dp"
-        android:layout_below="@+id/signupLink"/>
-
-    <Button
-        android:id="@+id/googleBtn"
-        android:text="@string/googleProfile"
-        android:layout_marginLeft="140dp"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/signupLink"/>
-
-    <Button
-        android:id="@+id/vkontakteBtn"
-        android:text="@string/vkontakteProfile"
-        android:layout_marginLeft="210dp"
-        android:layout_width="105dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="80dp"
-        android:layout_below="@+id/signupLink"/>
-
-</RelativeLayout>
+</ViewFlipper>

@@ -10,6 +10,11 @@
     <string name="loginEmail">Email</string>
     <string name="loginPassword">Password</string>
 
+    <string name="registerUsername">Username</string>
+    <string name="registerPhone">Phone</string>
+
+    <string name="registerBtn">Register</string>
+
     <string name="loginWindow">LOGIN</string>
     <string name="profileWindow">PROFILE</string>
 
@@ -21,4 +26,9 @@
 
     <string name="serverMain">poputchick-server</string>
     <string name="loginMessage">Please, login</string>
+    <string name="successLogin">Logged in</string>
+    <string name="successFacebook">Logged in via Facebook</string>
+    <string name="successTwitter">Logged in via Twitter</string>
+    <string name="successGoogle">Logged in via Google</string>
+    <string name="successVkontakte">Logged in via Vkontakte</string>
 </resources>

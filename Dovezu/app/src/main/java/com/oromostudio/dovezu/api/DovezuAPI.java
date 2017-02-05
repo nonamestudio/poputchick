@@ -109,6 +109,10 @@ public interface DovezuAPI {
     @GET("/profile")
     Call<ProfileModel> getProfile();
 
+    //Check auth
+    @GET("/check")
+    Call<String> checkAuth();
+
     //Get server
     @GET("/")
     Call<String> getServer();
