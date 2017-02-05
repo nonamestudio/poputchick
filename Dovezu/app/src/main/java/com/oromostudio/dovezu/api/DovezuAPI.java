@@ -108,4 +108,8 @@ public interface DovezuAPI {
     //Get profile
     @GET("/profile")
     Call<ProfileModel> getProfile();
+
+    //Get server
+    @GET("/")
+    Call<String> getServer();
 }
