@@ -12,7 +12,10 @@ public class DovezuApp extends Application{
 
     private static DovezuAPI dovezuAPI;
     private Retrofit retrofit;
+    /////////////////////////////////////////////////////
+    //TODO: Delete localUrl. Only dor development period
     private String localUrl = "http://10.0.2.2:3000";
+    ////////////////////////////////////////////////////
     private String globalUrl = "https://dovezu.herokuapp.com";
 
     @Override

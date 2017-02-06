@@ -26,6 +26,8 @@
 
     <string name="serverMain">poputchick-server</string>
     <string name="loginMessage">Please, login</string>
+    <string name="success">Success</string>
+    <string name="failure">Failure</string>
     <string name="successLogin">Logged in</string>
     <string name="successFacebook">Logged in via Facebook</string>
     <string name="successTwitter">Logged in via Twitter</string>

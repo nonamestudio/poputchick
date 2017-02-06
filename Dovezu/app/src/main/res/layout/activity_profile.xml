@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_profile"
     android:layout_width="match_parent"
@@ -19,19 +19,5 @@
         android:id="@+id/localLayoutInclude"
         layout="@layout/local_profile_layout"/>
 
-    <include
-        android:id="@+id/facebookLayoutInclude"
-        layout="@layout/facebook_profile_layout"/>
 
-    <include
-        android:id="@+id/twitterLayoutInclude"
-        layout="@layout/twitter_profile_layout"/>
-    <include
-        android:id="@+id/googleLayoutInclude"
-        layout="@layout/google_profile_layout"/>
-
-    <include
-        android:id="@+id/vkontakteLayoutInclude"
-        layout="@layout/vkontakte_profile_layout"/>
-
-</RelativeLayout>
+</ViewFlipper>

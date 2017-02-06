@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/localBtn"
+        android:text="@string/localProfile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <Button
+        android:id="@+id/facebookBtn"
+        android:text="@string/facebookProfile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <Button
+        android:id="@+id/twitterBtn"
+        android:text="@string/twitterProfile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <Button
+        android:id="@+id/googleBtn"
+        android:text="@string/googleProfile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <Button
+        android:id="@+id/vkontakteBtn"
+        android:text="@string/vkontakteProfile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+</LinearLayout>

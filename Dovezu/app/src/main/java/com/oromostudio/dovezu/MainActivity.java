@@ -25,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void connectToServer(View view){
-
+    @Override
+    protected void onResume() {
+        super.onResume();
         DovezuApp.getAPI().checkAuth().enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -45,5 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Error", t.getMessage());
             }
         });
+
     }
+
 }
