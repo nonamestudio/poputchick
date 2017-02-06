@@ -7,29 +7,49 @@
         android:id="@+id/localBtn"
         android:text="@string/localProfile"
         android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:background="@drawable/button_background_9"
         android:layout_height="50dp" />
 
     <Button
         android:id="@+id/facebookBtn"
         android:text="@string/facebookProfile"
+        android:layout_marginBottom="10dp"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
         android:layout_width="match_parent"
+        android:background="@drawable/button_background_9"
         android:layout_height="50dp" />
     <Button
         android:id="@+id/twitterBtn"
         android:text="@string/twitterProfile"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_background_9"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
     <Button
         android:id="@+id/googleBtn"
         android:text="@string/googleProfile"
+        android:background="@drawable/button_background_9"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
         android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
         android:layout_height="50dp" />
 
     <Button
         android:id="@+id/vkontakteBtn"
         android:text="@string/vkontakteProfile"
+        android:background="@drawable/button_background_9"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
         android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
         android:layout_height="50dp" />
 
 </LinearLayout>

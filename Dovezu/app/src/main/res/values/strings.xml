@@ -13,7 +13,7 @@
     <string name="registerUsername">Username</string>
     <string name="registerPhone">Phone</string>
 
-    <string name="registerBtn">Register</string>
+    <string name="registerBtn">REGISTER</string>
 
     <string name="loginWindow">LOGIN</string>
     <string name="profileWindow">PROFILE</string>
