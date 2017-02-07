@@ -33,4 +33,8 @@
     <string name="successTwitter">Logged in via Twitter</string>
     <string name="successGoogle">Logged in via Google</string>
     <string name="successVkontakte">Logged in via Vkontakte</string>
+    <string name="noPassword">Please, enter password</string>
+    <string name="noEmail">Please, enter email</string>
+    <string name="noUsername">Please, enter username</string>
+    <string name="noPhone">Please, enter phone number</string>
 </resources>

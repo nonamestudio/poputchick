@@ -8,9 +8,9 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DovezuApp extends Application{
+public class DovezuApp_old extends Application{
 
-    private static DovezuAPI dovezuAPI;
+    private static DovezuAPI_old dovezuAPI;
     private Retrofit retrofit;
     /////////////////////////////////////////////////////
     //TODO: Delete localUrl. Only dor development period
@@ -29,10 +29,10 @@ public class DovezuApp extends Application{
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        dovezuAPI = retrofit.create(DovezuAPI.class);
+        dovezuAPI = retrofit.create(DovezuAPI_old.class);
     }
 
-    public static DovezuAPI getAPI(){
+    public static DovezuAPI_old getAPI(){
         return dovezuAPI;
     }
 }

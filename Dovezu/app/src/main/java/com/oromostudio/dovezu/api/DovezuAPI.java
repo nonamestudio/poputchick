@@ -1,119 +1,58 @@
 package com.oromostudio.dovezu.api;
 
-import com.oromostudio.dovezu.models.LoginModel;
-import com.oromostudio.dovezu.models.ProfileModel;
-import com.oromostudio.dovezu.models.SignUpModel;
+/**
+ * Created by abaik on 07.02.2017.
+ */
 
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+public class DovezuAPI {
 
-public interface DovezuAPI {
 
-    ///////////////////////////////////////////////////////
-    ///LOCAL SCOPE
-    ///////////////////////////////////////////////////////
+    private static final String BASE_URL = "https://dovezu.herokuapp.com";
+    private static final String LOCAL_URL = "http://10.0.2.2:3000";
 
-    //Login local
-    @POST("/login")
-    Call<String> loginLocal(@Body LoginModel loginModel);
+    private static final String LOGIN = "/login";
+    private static final String PROFILE = "/profile";
+    private static final String SIGNUP = "/signup";
 
-    //Sign up local
-    @POST("/signup")
-    Call<String> signUpLocal(@Body SignUpModel signUpModel);
 
-    //Connect local
-    @POST("/connect/local")
-    Call<String> connectLocal(@Body SignUpModel signUpModel);
+    private static final String COOKIE_NAME = "set-cookie";
+    private static final String SAVE_COOKIE = "connect.id";
 
-    //Unlink local
-    @GET("/unlink/local")
-    Call<String> unlinkLocal();
+    private static String baseAbsoluteUrl(String url){
+        return LOCAL_URL + url;
+    }
 
-    ///////////////////////////////////////////////////////
+    public static String getSaveCookie() {
+        return SAVE_COOKIE;
+    }
 
-    ///////////////////////////////////////////////////////
-    ///FACEBOOK SCOPE
-    ///////////////////////////////////////////////////////
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
 
-    //Authenticate via Facebook
-    @GET("/auth/facebook")
-    Call<String> loginFacebook();
+    public static String getLocalUrl() {
+        return LOCAL_URL;
+    }
 
-    //Connect Facebook account
-    @GET("/connect/facebook")
-    Call<String> connectFacebook();
+    public static String getLogin() {
+        return baseAbsoluteUrl(LOGIN);
+    }
 
-    //Unlink Facebook account
-    @GET("/unlink/facebook")
-    Call<String> unlinkFacebook();
+    public static String getSignup() {
+        return baseAbsoluteUrl(SIGNUP);
+    }
 
-    ///////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////
-    ///TWITTER SCOPE
-    ///////////////////////////////////////////////////////
+    public static String getProfile() {
+        return baseAbsoluteUrl(PROFILE);
+    }
 
-    //Authenticate via Twitter
-    @GET("/auth/twitter")
-    Call<String> loginTwitter();
+    public static String getCookieName() {
+        return COOKIE_NAME;
+    }
 
-    //Connect Twitter account
-    @GET("/connect/twitter")
-    Call<String> connectTwitter();
 
-    //Unlink Twitter account
-    @GET("/unlink/twitter")
-    Call<String> unlinkTwitter();
 
-    ///////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////
-    ///GOOGLE SCOPE
-    ///////////////////////////////////////////////////////
 
-    //Authenticate via Google
-    @GET("/auth/google")
-    Call<String> loginGoogle();
-
-    //Connect Google account
-    @GET("/connect/google")
-    Call<String> connectGoogle();
-
-    //Unlink Google account
-    @GET("/unlink/google")
-    Call<String> unlinkGoogle();
-
-    ///////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////
-    ///VKONTAKTE SCOPE
-    ///////////////////////////////////////////////////////
-
-    //Authenticate via Vkontakte
-    @GET("/auth/vkontakte")
-    Call<String> loginVkontakte();
-
-    //Connect Vkontakte account
-    @GET("/connect/vkontakte")
-    Call<String> connectVkontakte();
-
-    //Unlink Vkontakte account
-    @GET("/unlink/vkontakte")
-    Call<String> unlinkVkontakte();
-
-    ///////////////////////////////////////////////////////
-
-    //Get profile
-    @GET("/profile")
-    Call<ProfileModel> getProfile();
-
-    //Check auth
-    @GET("/check")
-    Call<String> checkAuth();
-
-    //Get server
-    @GET("/")
-    Call<String> getServer();
 }

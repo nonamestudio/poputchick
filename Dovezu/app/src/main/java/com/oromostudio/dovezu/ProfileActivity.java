@@ -1,5 +1,6 @@
 package com.oromostudio.dovezu;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,15 +8,20 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
 import com.oromostudio.dovezu.api.DovezuAPI;
-import com.oromostudio.dovezu.api.DovezuApp;
-import com.oromostudio.dovezu.models.FacebookModel;
-import com.oromostudio.dovezu.models.GoogleModel;
+import com.oromostudio.dovezu.api.DovezuApp_old;
 import com.oromostudio.dovezu.models.LocalModel;
 import com.oromostudio.dovezu.models.ProfileModel;
-import com.oromostudio.dovezu.models.TwitterModel;
-import com.oromostudio.dovezu.models.VkontakteModel;
 
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,6 +81,10 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     private ProfileModel profile;
+    private SharedPreferences sharedPreferences;
+    private AsyncHttpClient client;
+    private RequestParams params;
+    private PersistentCookieStore cookieStore;
 
 
     @Override
@@ -91,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onResume();
 
         getProfile();
-        initViews();
+
 
     }
 
@@ -123,7 +133,34 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void getProfile() {
-        DovezuApp.getAPI().getProfile().enqueue(new Callback<ProfileModel>() {
+
+
+        client = new AsyncHttpClient();
+        cookieStore = new PersistentCookieStore(getApplicationContext());
+        client.setCookieStore(cookieStore);
+        sharedPreferences = getPreferences(MODE_PRIVATE);
+
+        BasicClientCookie cookie = new BasicClientCookie("cook", "awesome");
+        cookie.setValue(sharedPreferences.getString(DovezuAPI.getSaveCookie(), ""));
+        cookieStore.addCookie(cookie);
+
+        client.get(DovezuAPI.getProfile(), new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                profile = gson.fromJson(response.toString(), ProfileModel.class);
+                initViews();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        initViews();
+
+        DovezuApp_old.getAPI().getProfile().enqueue(new Callback<ProfileModel>() {
             @Override
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                 Toast.makeText(ProfileActivity.this,"Profile loading...", Toast.LENGTH_SHORT).show();

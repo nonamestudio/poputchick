@@ -1,9 +1,9 @@
 package com.oromostudio.dovezu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,12 +15,15 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.oromostudio.dovezu.api.DovezuApp;
-import com.oromostudio.dovezu.models.LocalModel;
+import com.oromostudio.dovezu.api.DovezuAPI;
+import com.oromostudio.dovezu.api.DovezuApp_old;
 import com.oromostudio.dovezu.models.LoginModel;
 import com.oromostudio.dovezu.models.SignUpModel;
 
+import java.util.List;
+
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.cookie.Cookie;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +64,11 @@ public class LoginActivity extends AppCompatActivity {
     private Button   registerBtn;
     /////////////////////////////
 
+    private SharedPreferences sharedPreferences;
+    private AsyncHttpClient client;
+    private RequestParams params;
+    private PersistentCookieStore cookieStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,29 +97,43 @@ public class LoginActivity extends AppCompatActivity {
                         login.setEmail(email);
                         login.setPassword(password);
 
+                        client = new AsyncHttpClient();
+                        cookieStore = new PersistentCookieStore(getApplicationContext());
+                        client.setCookieStore(cookieStore);
+                        params = new RequestParams();
+                        params.put("email", email);
+                        params.put("password", email);
 
-
-                        DovezuApp.getAPI().loginLocal(login).enqueue(new Callback<String>() {
+                        client.post(DovezuAPI.getLogin(), params, new AsyncHttpResponseHandler() {
                             @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                sharedPreferences = getPreferences(MODE_PRIVATE);
+                                SharedPreferences.Editor ed = sharedPreferences.edit();
 
-                                if(response.body().toString().compareTo(getString(R.string.success)) == 0){
-                                    toProfile();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Invalid login or password", Toast.LENGTH_SHORT).show();
+                                List<Cookie> cookies = cookieStore.getCookies();
+
+                                for (Cookie cookie : cookies){
+                                    if(cookie.getName().compareTo(DovezuAPI.getCookieName()) == 0){
+                                        ed.putString(DovezuAPI.getSaveCookie(), cookie.getValue());
+                                        ed.commit();
+                                        break;
+                                    }
                                 }
+                                Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                startActivity(intent);
                             }
 
                             @Override
-                            public void onFailure(Call<String> call, Throwable t) {
-
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
                             }
                         });
+
                     } else {
-                        Toast.makeText(LoginActivity.this, "Please, enter password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.noPassword), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Please, enter email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.noEmail), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -128,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
         loginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DovezuApp.getAPI().loginFacebook().enqueue(new Callback<String>() {
+                DovezuApp_old.getAPI().loginFacebook().enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.body().toString().compareTo(getString(R.string.successFacebook)) == 0){
@@ -148,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
         loginTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DovezuApp.getAPI().loginTwitter().enqueue(new Callback<String>() {
+                DovezuApp_old.getAPI().loginTwitter().enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.body().toString().compareTo(getString(R.string.successTwitter)) == 0){
@@ -168,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         loginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DovezuApp.getAPI().loginGoogle().enqueue(new Callback<String>() {
+                DovezuApp_old.getAPI().loginGoogle().enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.body().toString().compareTo(getString(R.string.successGoogle)) == 0){
@@ -188,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
         loginVkontakte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DovezuApp.getAPI().loginVkontakte().enqueue(new Callback<String>() {
+                DovezuApp_old.getAPI().loginVkontakte().enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.body().toString().compareTo(getString(R.string.successVkontakte)) == 0){
@@ -215,10 +237,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 Boolean passed = true;
 
-                if(username.length() == 0) {Toast.makeText(LoginActivity.this, "Please, enter username", Toast.LENGTH_SHORT).show();     passed = false;}
-                if(email.length()    == 0) {Toast.makeText(LoginActivity.this, "Please, enter email", Toast.LENGTH_SHORT).show();        passed = false;}
-                if(phone.length()    == 0) {Toast.makeText(LoginActivity.this, "Please, enter phone number", Toast.LENGTH_SHORT).show(); passed = false;}
-                if(password.length() == 0) {Toast.makeText(LoginActivity.this, "Please, enter password", Toast.LENGTH_SHORT).show();     passed = false;}
+                if(username.length() == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noUsername), Toast.LENGTH_SHORT).show(); passed = false;}
+                if(email.length()    == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noEmail),    Toast.LENGTH_SHORT).show(); passed = false;}
+                if(phone.length()    == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noPhone),    Toast.LENGTH_SHORT).show(); passed = false;}
+                if(password.length() == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noPassword), Toast.LENGTH_SHORT).show(); passed = false;}
 
                 //TODO: Validate email and phone number
 
@@ -230,7 +252,19 @@ public class LoginActivity extends AppCompatActivity {
                     signUpModel.setPhone(phone);
                     signUpModel.setPassword(password);
 
-                    DovezuApp.getAPI().signUpLocal(signUpModel).enqueue(new Callback<String>() {
+                    client = new AsyncHttpClient();
+                    cookieStore = new PersistentCookieStore(getApplicationContext());
+                    client.setCookieStore(cookieStore);
+                    params = new RequestParams();
+                    params.put("username", username);
+                    params.put("email", email);
+                    params.put("phone", phone);
+                    params.put("password", password);
+
+
+                    client.post(DovezuAPI.)
+
+                    DovezuApp_old.getAPI().signUpLocal(signUpModel).enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
                             if(response.body().toString().compareTo(getString(R.string.success)) == 0){
