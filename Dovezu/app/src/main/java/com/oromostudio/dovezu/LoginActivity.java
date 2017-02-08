@@ -262,7 +262,30 @@ public class LoginActivity extends AppCompatActivity {
                     params.put("password", password);
 
 
-                    client.post(DovezuAPI.)
+                    client.post(DovezuAPI.getSignup(), params, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            sharedPreferences = getPreferences(MODE_PRIVATE);
+                            SharedPreferences.Editor ed = sharedPreferences.edit();
+
+                            List<Cookie> cookies = cookieStore.getCookies();
+
+                            for (Cookie cookie : cookies){
+                                if(cookie.getName().compareTo(DovezuAPI.getCookieName()) == 0){
+                                    ed.putString(DovezuAPI.getSaveCookie(), cookie.getValue());
+                                    ed.commit();
+                                    break;
+                                }
+                            }
+                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                        }
+                    });
 
                     DovezuApp_old.getAPI().signUpLocal(signUpModel).enqueue(new Callback<String>() {
                         @Override
