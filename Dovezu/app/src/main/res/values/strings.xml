@@ -41,4 +41,12 @@
 
     <string name="searchTitle">Search</string>
     <string name="logout">Logout</string>
+
+    <string name="openDrawer">Open</string>
+    <string name="closeDrawer">Close</string>
+    
+    <string name="onceTrip">Once</string>
+    <string name="constantlyTrip">Constantly</string>
+    <string name="interCityTrip">Intercity</string>
+
 </resources>
