@@ -101,8 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                         cookieStore = new PersistentCookieStore(getApplicationContext());
                         client.setCookieStore(cookieStore);
                         params = new RequestParams();
-                        params.put("email", email);
-                        params.put("password", email);
+                        params.put(DovezuAPI.getEmailField(), email);
+                        params.put(DovezuAPI.getPasswordField(), password);
 
                         client.post(DovezuAPI.getLogin(), params, new AsyncHttpResponseHandler() {
                             @Override
@@ -256,10 +256,10 @@ public class LoginActivity extends AppCompatActivity {
                     cookieStore = new PersistentCookieStore(getApplicationContext());
                     client.setCookieStore(cookieStore);
                     params = new RequestParams();
-                    params.put("username", username);
-                    params.put("email", email);
-                    params.put("phone", phone);
-                    params.put("password", password);
+                    params.put(DovezuAPI.getUsernameField(), username);
+                    params.put(DovezuAPI.getEmailField(), email);
+                    params.put(DovezuAPI.getPhoneField(), phone);
+                    params.put(DovezuAPI.getPasswordField(), password);
 
 
                     client.post(DovezuAPI.getSignup(), params, new AsyncHttpResponseHandler() {

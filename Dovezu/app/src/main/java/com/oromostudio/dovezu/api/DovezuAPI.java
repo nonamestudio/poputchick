@@ -7,18 +7,39 @@ package com.oromostudio.dovezu.api;
 public class DovezuAPI {
 
 
-    private static final String BASE_URL = "https://dovezu.herokuapp.com";
+    private static final String BASE_URL  = "https://dovezu.herokuapp.com";
     private static final String LOCAL_URL = "http://10.0.2.2:3000";
 
-    private static final String LOGIN = "/login";
+    private static final String LOGIN   = "/login";
     private static final String PROFILE = "/profile";
-    private static final String SIGNUP = "/signup";
-
+    private static final String SIGNUP  = "/signup";
 
     private static final String COOKIE_NAME = "set-cookie";
     private static final String SAVE_COOKIE = "connect.id";
 
+    private static final String USERNAME_FIELD = "username";
+    private static final String EMAIL_FIELD    = "email";
+    private static final String PHONE_FIELD    = "phone";
+    private static final String PASSWORD_FIELD = "password";
+
+    public static String getUsernameField() {
+        return USERNAME_FIELD;
+    }
+
+    public static String getEmailField() {
+        return EMAIL_FIELD;
+    }
+
+    public static String getPhoneField() {
+        return PHONE_FIELD;
+    }
+
+    public static String getPasswordField() {
+        return PASSWORD_FIELD;
+    }
+
     private static String baseAbsoluteUrl(String url){
+        //TODO: change to BASE_URL after tests
         return LOCAL_URL + url;
     }
 
@@ -41,7 +62,6 @@ public class DovezuAPI {
     public static String getSignup() {
         return baseAbsoluteUrl(SIGNUP);
     }
-
 
     public static String getProfile() {
         return baseAbsoluteUrl(PROFILE);
