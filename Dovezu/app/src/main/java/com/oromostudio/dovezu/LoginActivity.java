@@ -12,12 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.oromostudio.dovezu.api.DovezuAPI;
 import com.oromostudio.dovezu.api.DovezuApp_old;
+import com.oromostudio.dovezu.models.LocalModel;
 import com.oromostudio.dovezu.models.LoginModel;
 import com.oromostudio.dovezu.models.ProfileModel;
 import com.oromostudio.dovezu.models.SignUpModel;
@@ -235,6 +237,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 String username = registerUsername.getText().toString();
                 String email    = registerEmail.getText().toString();
                 String phone    = registerPhone.getText().toString();
@@ -261,53 +264,25 @@ public class LoginActivity extends AppCompatActivity {
                     cookieStore = new PersistentCookieStore(getApplicationContext());
                     client.setCookieStore(cookieStore);
                     params = new RequestParams();
+
                     params.put(DovezuAPI.getUsernameField(), username);
                     params.put(DovezuAPI.getEmailField(), email);
                     params.put(DovezuAPI.getPhoneField(), phone);
                     params.put(DovezuAPI.getPasswordField(), password);
 
-
-
-
+                    Log.d("SIGNUP", DovezuAPI.getSignup());
 
 
                     client.post(DovezuAPI.getSignup(), params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            sharedPreferences = getPreferences(MODE_PRIVATE);
-                            SharedPreferences.Editor ed = sharedPreferences.edit();
-
-                            List<Cookie> cookies = cookieStore.getCookies();
-
-                            for (Cookie cookie : cookies){
-                                if(cookie.getName().compareTo(DovezuAPI.getCookieName()) == 0){
-                                    ed.putString(DovezuAPI.getSaveCookie(), cookie.getValue());
-                                    ed.commit();
-                                    break;
-                                }
-                            }
-                            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            //startActivity(intent);
+                            viewFlipper.setDisplayedChild(0);
+                            Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                        }
-                    });
-
-                    DovezuApp_old.getAPI().signUpLocal(signUpModel).enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            if(response.body().toString().compareTo(getString(R.string.success)) == 0){
-                                Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
+                            Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
