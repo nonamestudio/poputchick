@@ -1,31 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/localProfile"/>
+        android:text="@string/localProfile"
+        android:id="@+id/dovezuAccountTV"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:layout_below="@+id/dovezuAccountTV"
+        android:layout_marginTop="40dp"
+        android:id="@+id/profileLocalUsernameTV"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/localUsernameTV"/>
+        android:id="@+id/localUsernameTV"
+        android:layout_toRightOf="@+id/profileLocalUsernameTV"
+        android:layout_alignBaseline="@+id/profileLocalUsernameTV"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileLocalUsernameTV"
+        android:text="@string/email"
+        android:id="@+id/profileLocalEmailTV"
+        android:layout_marginTop="40dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/localEmailTV"/>
+        android:id="@+id/localEmailTV"
+        android:layout_toRightOf="@+id/profileLocalEmailTV"
+        android:layout_alignBaseline="@+id/profileLocalEmailTV"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileLocalEmailTV"
+        android:text="@string/phone"
+        android:id="@+id/profileLocalPhoneTV"
+        android:layout_marginTop="40dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/localPhoneTV"/>
+        android:id="@+id/localPhoneTV"
+        android:layout_toRightOf="@+id/profileLocalPhoneTV"
+        android:layout_alignBaseline="@+id/profileLocalPhoneTV"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/localPasswordTV"/>
 
-</LinearLayout>
+</RelativeLayout>

@@ -35,7 +35,6 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView localUsername;
     private TextView localEmail;
     private TextView localPhone;
-    private TextView localPassword;
     ///////////////////////////////
 
     ///////////////////////////////
@@ -138,41 +137,29 @@ public class ProfileActivity extends AppCompatActivity {
         client = new AsyncHttpClient();
         cookieStore = new PersistentCookieStore(getApplicationContext());
         client.setCookieStore(cookieStore);
-        sharedPreferences = getPreferences(MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(), MODE_PRIVATE);
 
-        BasicClientCookie cookie = new BasicClientCookie("cook", "awesome");
-        cookie.setValue(sharedPreferences.getString(DovezuAPI.getSaveCookie(), ""));
-        cookieStore.addCookie(cookie);
+        if(!sharedPreferences.contains(DovezuAPI.getSaveCookie())) {
+            BasicClientCookie cookie = new BasicClientCookie("cook", "awesome");
+            cookie.setValue(sharedPreferences.getString(DovezuAPI.getSaveCookie(), ""));
+            cookieStore.addCookie(cookie);
 
-        client.get(DovezuAPI.getProfile(), new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Gson gson = new Gson();
-                profile = gson.fromJson(response.toString(), ProfileModel.class);
-                initViews();
-            }
+            client.get(DovezuAPI.getProfile(), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Gson gson = new Gson();
+                    profile = gson.fromJson(response.toString(), ProfileModel.class);
+                    initViews();
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         initViews();
-
-        DovezuApp_old.getAPI().getProfile().enqueue(new Callback<ProfileModel>() {
-            @Override
-            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                Toast.makeText(ProfileActivity.this,"Profile loading...", Toast.LENGTH_SHORT).show();
-                profile = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<ProfileModel> call, Throwable t) {
-                Log.d("ERROR", t.getMessage());
-                Toast.makeText(ProfileActivity.this,"Failure on load profile", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
@@ -183,12 +170,10 @@ public class ProfileActivity extends AppCompatActivity {
         localUsername = (TextView) localProfile.findViewById(R.id.localUsernameTV);
         localEmail    = (TextView) localProfile.findViewById(R.id.localEmailTV);
         localPhone    = (TextView) localProfile.findViewById(R.id.localPhoneTV);
-        localPassword = (TextView) localProfile.findViewById(R.id.localPasswordTV);
 
         localUsername.setText(local.getUsername());
         localEmail.setText(local.getEmail());
         localPhone.setText(local.getPhone());
-        localPassword.setText(local.getPassword());
     }
 
 //    //Init Facebook elements

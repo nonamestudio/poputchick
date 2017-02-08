@@ -7,11 +7,11 @@
     <string name="googleProfile">Google</string>
     <string name="vkontakteProfile">Vkontakte</string>
 
-    <string name="loginEmail">Email</string>
-    <string name="loginPassword">Password</string>
 
-    <string name="registerUsername">Username</string>
-    <string name="registerPhone">Phone</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="password">Password</string>
 
     <string name="registerBtn">REGISTER</string>
 
@@ -19,7 +19,7 @@
     <string name="profileWindow">PROFILE</string>
 
     <string name="loginBtn">Login</string>
-    <string name="signupBtn">SignUp</string>
+    <string name="signupBtn">Create one!</string>
     <string name="haveNoAccount">Do not have account yet?</string>
     <string name="or">or</string>
 
@@ -37,4 +37,5 @@
     <string name="noEmail">Please, enter email</string>
     <string name="noUsername">Please, enter username</string>
     <string name="noPhone">Please, enter phone number</string>
+    <string name="searchTitle">Search</string>
 </resources>

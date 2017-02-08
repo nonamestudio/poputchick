@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.loopj.android.http.RequestParams;
 import com.oromostudio.dovezu.api.DovezuAPI;
 import com.oromostudio.dovezu.api.DovezuApp_old;
 import com.oromostudio.dovezu.models.LoginModel;
+import com.oromostudio.dovezu.models.ProfileModel;
 import com.oromostudio.dovezu.models.SignUpModel;
 
 import java.util.List;
@@ -103,23 +105,26 @@ public class LoginActivity extends AppCompatActivity {
                         params = new RequestParams();
                         params.put(DovezuAPI.getEmailField(), email);
                         params.put(DovezuAPI.getPasswordField(), password);
+                        cookieStore.clear();
+
+
 
                         client.post(DovezuAPI.getLogin(), params, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                sharedPreferences = getPreferences(MODE_PRIVATE);
+                                sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(),MODE_PRIVATE);
                                 SharedPreferences.Editor ed = sharedPreferences.edit();
-
                                 List<Cookie> cookies = cookieStore.getCookies();
-
                                 for (Cookie cookie : cookies){
                                     if(cookie.getName().compareTo(DovezuAPI.getCookieName()) == 0){
-                                        ed.putString(DovezuAPI.getSaveCookie(), cookie.getValue());
-                                        ed.commit();
-                                        break;
+                                        if(cookie.getDomain().compareTo(DovezuAPI.getDomain()) == 0) {
+                                            ed.putString(DovezuAPI.getSaveCookie(), cookie.getValue());
+                                            ed.commit();
+                                            break;
+                                        }
                                     }
                                 }
-                                Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
 
@@ -262,6 +267,10 @@ public class LoginActivity extends AppCompatActivity {
                     params.put(DovezuAPI.getPasswordField(), password);
 
 
+
+
+
+
                     client.post(DovezuAPI.getSignup(), params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -277,8 +286,8 @@ public class LoginActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
-                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                            startActivity(intent);
+                            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            //startActivity(intent);
                         }
 
                         @Override

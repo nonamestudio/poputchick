@@ -11,7 +11,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:id="@+id/registerUsernameET"
-        android:hint="@string/registerUsername" />
+        android:hint="@string/username" />
 
     <EditText
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         android:layout_below="@+id/registerUsernameET"
         android:layout_marginTop="50dp"
         android:id="@+id/registerEmailET"
-        android:hint="@string/loginEmail" />
+        android:hint="@string/email" />
 
 
 
@@ -29,7 +29,7 @@
         android:layout_marginTop="50dp"
         android:layout_below="@+id/registerEmailET"
         android:id="@+id/registerPhoneET"
-        android:hint="@string/registerPhone" />
+        android:hint="@string/phone" />
 
 
 
@@ -39,7 +39,7 @@
         android:layout_below="@+id/registerPhoneET"
         android:layout_marginTop="50dp"
         android:id="@+id/registerPasswordET"
-        android:hint="@string/loginPassword" />
+        android:hint="@string/password" />
 
 
 

@@ -9,13 +9,14 @@ public class DovezuAPI {
 
     private static final String BASE_URL  = "https://dovezu.herokuapp.com";
     private static final String LOCAL_URL = "http://10.0.2.2:3000";
+    private static final String DOMAIN    = "dovezu.herokuapp.com";
 
     private static final String LOGIN   = "/login";
     private static final String PROFILE = "/profile";
     private static final String SIGNUP  = "/signup";
 
-    private static final String COOKIE_NAME = "set-cookie";
-    private static final String SAVE_COOKIE = "connect.id";
+    private static final String COOKIE_NAME = "connect.sid";
+    private static final String SAVE_COOKIE = "myCookie";
 
     private static final String USERNAME_FIELD = "username";
     private static final String EMAIL_FIELD    = "email";
@@ -40,7 +41,7 @@ public class DovezuAPI {
 
     private static String baseAbsoluteUrl(String url){
         //TODO: change to BASE_URL after tests
-        return LOCAL_URL + url;
+        return BASE_URL + url;
     }
 
     public static String getSaveCookie() {
@@ -69,6 +70,10 @@ public class DovezuAPI {
 
     public static String getCookieName() {
         return COOKIE_NAME;
+    }
+
+    public static String getDomain() {
+        return DOMAIN;
     }
 
 
