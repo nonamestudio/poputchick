@@ -11,7 +11,7 @@ import com.oromostudio.dovezu.R;
 
 public class ConstantlyTripFragment extends AbstractTabFragment {
 
-    private static final int LAYOUT = R.layout.login_layout;
+    private static final int LAYOUT = R.layout.fragment_once_trip;
 
 
     public static OnceTripFragment getInstance(Context context){
@@ -20,7 +20,7 @@ public class ConstantlyTripFragment extends AbstractTabFragment {
         OnceTripFragment fragment = new OnceTripFragment();
         fragment.setArguments(args);
         fragment.setContext(context);
-        fragment.setTitle(context.getString(R.string.onceTrip));
+        fragment.setTitle(context.getString(R.string.constantlyTrip));
 
         return fragment;
 

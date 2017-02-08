@@ -11,7 +11,7 @@ import com.oromostudio.dovezu.R;
 
 
 public class IntercityTripFragment extends AbstractTabFragment {
-    private static final int LAYOUT = R.layout.login_layout;
+    private static final int LAYOUT = R.layout.fragment_once_trip;
 
 
 
