@@ -19,6 +19,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.oromostudio.dovezu.api.DovezuAPI;
 import com.oromostudio.dovezu.api.DovezuApp_old;
+import com.oromostudio.dovezu.api.DovezuClient;
 import com.oromostudio.dovezu.models.LocalModel;
 import com.oromostudio.dovezu.models.LoginModel;
 import com.oromostudio.dovezu.models.ProfileModel;
@@ -109,23 +110,9 @@ public class LoginActivity extends AppCompatActivity {
                         params.put(DovezuAPI.getPasswordField(), password);
                         cookieStore.clear();
 
-
-
-                        client.post(DovezuAPI.getLogin(), params, new AsyncHttpResponseHandler() {
+                        DovezuClient.login(getApplicationContext(), params, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(),MODE_PRIVATE);
-                                SharedPreferences.Editor ed = sharedPreferences.edit();
-                                List<Cookie> cookies = cookieStore.getCookies();
-                                for (Cookie cookie : cookies){
-                                    if(cookie.getName().compareTo(DovezuAPI.getCookieName()) == 0){
-                                        if(cookie.getDomain().compareTo(DovezuAPI.getDomain()) == 0) {
-                                            ed.putString(DovezuAPI.getSaveCookie(), cookie.getValue());
-                                            ed.commit();
-                                            break;
-                                        }
-                                    }
-                                }
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
@@ -135,6 +122,31 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
                             }
                         });
+
+//                        client.post(DovezuAPI.getLogin(), params, new AsyncHttpResponseHandler() {
+//                            @Override
+//                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+//                                sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(),MODE_PRIVATE);
+//                                SharedPreferences.Editor ed = sharedPreferences.edit();
+//                                List<Cookie> cookies = cookieStore.getCookies();
+//                                for (Cookie cookie : cookies){
+//                                    if(cookie.getName().compareTo(DovezuAPI.getCookieName()) == 0){
+//                                        if(cookie.getDomain().compareTo(DovezuAPI.getDomain()) == 0) {
+//                                            ed.putString(DovezuAPI.getSaveCookie(), cookie.getValue());
+//                                            ed.commit();
+//                                            break;
+//                                        }
+//                                    }
+//                                }
+//                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                startActivity(intent);
+//                            }
+//
+//                            @Override
+//                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//                                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
 
                     } else {
                         Toast.makeText(LoginActivity.this, getString(R.string.noPassword), Toast.LENGTH_SHORT).show();

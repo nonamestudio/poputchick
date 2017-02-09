@@ -34,6 +34,8 @@ public class DovezuAPI {
     private static final String PHONE_FIELD    = "phone";
     private static final String PASSWORD_FIELD = "password";
 
+    private static SharedPreferences pref;
+
 
 
     private static String baseAbsoluteUrl(String url){
@@ -48,8 +50,6 @@ public class DovezuAPI {
 
         BasicClientCookie cookie = new BasicClientCookie("cool", "awesome");
 
-        SharedPreferences pref = context.getSharedPreferences(getSaveCookie(), Context.MODE_PRIVATE);
-
         cookie.setValue(pref.getString(getSaveCookie(), ""));
 
         cookieStore.addCookie(cookie);
@@ -60,6 +60,26 @@ public class DovezuAPI {
 
         return client;
     }
+
+    public static void saveSession (Context context, String session){
+        pref = context.getSharedPreferences(SAVE_COOKIE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString(COOKIE_NAME, session);
+        edit.commit();
+    }
+
+    public static String getSession(Context context){
+        pref = context.getSharedPreferences(SAVE_COOKIE, Context.MODE_PRIVATE);
+        return pref.getString(COOKIE_NAME, "");
+    }
+
+    public static void clearSession(Context context){
+        pref = context.getSharedPreferences(SAVE_COOKIE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        edit.clear();
+        edit.commit();
+    }
+
 
     public static String getUsernameField() {
         return USERNAME_FIELD;
