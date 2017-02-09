@@ -35,14 +35,9 @@ public class DovezuClient {
         return BASE_URL.concat(url);
     }
 
-    public static RequestHandle root(Context context, ResponseHandlerInterface responseHandler){
-        client.setCookieStore(getCookieStore(context));
-        return client.get(context, BASE_URL, responseHandler);
-    };
-
     public static RequestHandle login(Context context, RequestParams params, ResponseHandlerInterface responseHandler){
         client.setCookieStore(getEmptyCookieStore(context));
-        return client.get(context, absoluteUrl(LOGIN), params, responseHandler);
+        return client.post(context, absoluteUrl(LOGIN), params, responseHandler);
     }
 
     public static RequestHandle signup(Context context, RequestParams params, ResponseHandlerInterface responseHandler){

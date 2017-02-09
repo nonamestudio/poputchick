@@ -2,6 +2,7 @@ package com.oromostudio.dovezu;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -11,27 +12,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
 import com.oromostudio.dovezu.adapter.TabsPagerFragmentAdapter;
 import com.oromostudio.dovezu.api.DovezuAPI;
 import com.oromostudio.dovezu.api.DovezuClient;
-import com.oromostudio.dovezu.models.LocalModel;
 import com.oromostudio.dovezu.models.ProfileModel;
 
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         View header = navigationView.getHeaderView(0);
         username = (TextView) header.findViewById(R.id.navigationHeaderUsername);
+        Typeface robo = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
+        username.setTypeface(robo);
 
         getProfile();
     }
@@ -147,35 +145,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
             }
         });
-
-
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(), MODE_PRIVATE);
-//
-//        BasicClientCookie cookie = new BasicClientCookie("cook", "awesome");
-//        cookie.setValue(sharedPreferences.getString(DovezuAPI.getSaveCookie(), ""));
-//
-//        PersistentCookieStore cookieStore = new PersistentCookieStore(getApplicationContext());
-//        cookieStore.addCookie(cookie);
-//        client.setCookieStore(cookieStore);
-//
-//        client.get(getApplicationContext(), DovezuAPI.getLogout(), new AsyncHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                SharedPreferences.Editor ed = sharedPreferences.edit();
-//                ed.clear();
-//                ed.commit();
-//                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivity(intent);
-//                finish();
-//                Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     private void getProfile(){
@@ -190,36 +159,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
+                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
             }
         });
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        PersistentCookieStore cookieStore = new PersistentCookieStore(getApplicationContext());
-//        client.setCookieStore(cookieStore);
-//        sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(), MODE_PRIVATE);
-//
-//
-//        BasicClientCookie cookie = new BasicClientCookie("cook", "awesome");
-//        cookie.setValue(sharedPreferences.getString(DovezuAPI.getSaveCookie(), ""));
-//        cookieStore.addCookie(cookie);
-//
-//
-//        client.get(DovezuAPI.getProfile(), new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                Gson gson = new Gson();
-//                ProfileModel profile = new ProfileModel();
-//                profile = gson.fromJson(response.toString(), ProfileModel.class);
-//
-//                username.setText(profile.getLocal().getUsername());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
     }
 }
