@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/navigationLogout"
-        android:title="@string/logout"
-        android:orderInCategory="1"
-        android:icon="@mipmap/ic_logout" />
+
+    <group
+        android:id="@+id/tripButtons">
+        <item
+            android:id="@+id/navigationOnce"
+            android:title="@string/onceTrip"
+            android:orderInCategory="1"
+            android:icon="@mipmap/ic_plus_one" />
+        <item
+            android:id="@+id/navigationConstantly"
+            android:title="@string/constantlyTrip"
+            android:orderInCategory="2"
+            android:icon="@mipmap/ic_car" />
+        <item
+            android:id="@+id/navigationIntercity"
+            android:title="@string/interCityTrip"
+            android:orderInCategory="3"
+            android:icon="@mipmap/ic_city" />
+    </group>
+
+
+    <group
+        android:id="@+id/systemButtons">
+
+        <item
+            android:id="@+id/navigationLogout"
+            android:title="@string/logout"
+            android:orderInCategory="4"
+            android:icon="@mipmap/ic_logout" />
+    </group>
 
 
 </menu>

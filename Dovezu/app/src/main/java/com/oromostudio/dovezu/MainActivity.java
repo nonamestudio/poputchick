@@ -23,6 +23,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.oromostudio.dovezu.adapter.TabsPagerFragmentAdapter;
 import com.oromostudio.dovezu.api.DovezuAPI;
 import com.oromostudio.dovezu.api.DovezuClient;
+import com.oromostudio.dovezu.library.Constants;
 import com.oromostudio.dovezu.models.ProfileModel;
 
 import org.json.JSONObject;
@@ -40,7 +41,19 @@ public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
 
+    //----------------------------
+    //Navigation view header
     private TextView username;
+    private TextView email;
+    private TextView phone;
+    //------------------------------
+
+
+    //-----------------------------
+    //FONTS
+    private Typeface roboMed;
+    private Typeface roboReg;
+    //-----------------------------------------------------------
 
 
     private Intent intent;
@@ -48,8 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        roboMed = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
+        roboReg = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
 
         initToolbar();
         initTabs();
@@ -72,9 +89,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         View header = navigationView.getHeaderView(0);
+
         username = (TextView) header.findViewById(R.id.navigationHeaderUsername);
-        Typeface robo = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
-        username.setTypeface(robo);
+        email    = (TextView) header.findViewById(R.id.navigationHeaderEmail);
+        phone    = (TextView) header.findViewById(R.id.navigationHeaderPhone);
+
+        username.setTypeface(roboMed);
+        email.setTypeface(roboReg);
+        phone.setTypeface(roboReg);
 
         getProfile();
     }
@@ -119,14 +141,36 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+                drawerLayout.closeDrawers();
                 switch (item.getItemId()){
+                    case R.id.navigationOnce:
+                        showOnceTab();
+                        break;
+                    case R.id.navigationConstantly:
+                        showConstantlyTab();
+                        break;
+                    case R.id.navigationIntercity:
+                        showIntercityTab();
+                        break;
                     case R.id.navigationLogout:
                         logout();
+                        break;
                 }
                 return true;
             }
         });
+    }
+
+    private void showOnceTab() {
+        viewPager.setCurrentItem(Constants.TAB_ONE);
+    }
+
+    private void showConstantlyTab() {
+        viewPager.setCurrentItem(Constants.TAB_TWO);
+    }
+
+    private void showIntercityTab() {
+        viewPager.setCurrentItem(Constants.TAB_THREE);
     }
 
     private void logout(){
@@ -155,11 +199,13 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 ProfileModel profile = gson.fromJson(response.toString(), ProfileModel.class);
                 username.setText(profile.getLocal().getUsername());
+                email.setText(profile.getLocal().getEmail());
+                phone.setText(profile.getLocal().getPhone());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.failureProfile), Toast.LENGTH_SHORT).show();
             }
         });
     }
