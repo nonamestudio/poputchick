@@ -50,4 +50,10 @@
     <string name="constantlyTrip">Constantly</string>
     <string name="interCityTrip">Intercity</string>
 
-</resources>
+    <string name="status">status</string>
+    <string name="startPoint">from</string>
+    <string name="endPoint">to</string>
+    <string name="freeSeats">seats</string>
+    <string name="time">time</string>
+    <string name="waitTime">wait</string>
+    </resources>
