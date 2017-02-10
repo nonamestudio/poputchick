@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -32,13 +33,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String FAILURE = "id not contains";
-
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    private FloatingActionButton fab;
     private NavigationView navigationView;
 
     //----------------------------
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initTabs();
         initNavigationView();
+        initFab();
     }
 
     @Override
@@ -171,6 +171,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void showIntercityTab() {
         viewPager.setCurrentItem(Constants.TAB_THREE);
+    }
+
+    private void initFab() {
+        fab = (FloatingActionButton) findViewById(R.id.floatingAddButton);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RequestActivity.class);
+                intent.putExtra(Constants.EXTRA_REQUEST_TYPE, viewPager.getCurrentItem());
+                startActivity(intent);
+            }
+        });
     }
 
     private void logout(){

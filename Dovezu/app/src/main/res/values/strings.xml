@@ -45,15 +45,17 @@
 
     <string name="openDrawer">Open</string>
     <string name="closeDrawer">Close</string>
-    
+
     <string name="onceTrip">Once</string>
     <string name="constantlyTrip">Constantly</string>
     <string name="interCityTrip">Intercity</string>
 
-    <string name="status">status</string>
-    <string name="startPoint">from</string>
-    <string name="endPoint">to</string>
-    <string name="freeSeats">seats</string>
-    <string name="time">time</string>
-    <string name="waitTime">wait</string>
-    </resources>
+    <string name="status">Status</string>
+    <string name="startPoint">From</string>
+    <string name="endPoint">To</string>
+    <string name="freeSeats">Free seats</string>
+    <string name="time">Time</string>
+    <string name="waitTime">Wait</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+</resources>

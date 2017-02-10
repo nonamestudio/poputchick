@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:id="@+id/reqCreateStartPoint"
+            android:hint="@string/startPoint" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:id="@+id/reqCreateEndPoint"
+            android:hint="@string/endPoint"/>
+
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_margin="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="When"/>
+
+        <TextView
+            android:id="@+id/reqCreateTime"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_margin="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="wait"/>
+
+        <Spinner
+            android:id="@+id/reqCreateWaitTime"
+            android:layout_margin="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_margin="16dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:id="@+id/reqCreateFreeSeats"
+            android:hint="@string/freeSeats"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_margin="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Cost"/>
+        
+        <EditText
+            android:gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:inputType="number"
+            android:id="@+id/reqCreateMinPrice"/>
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="-"/>
+
+        <EditText
+            android:gravity="end|right"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:inputType="number"
+            android:id="@+id/reqCreateMaxPrice"/>
+        
+        
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:hint="Comments"
+        android:id="@+id/reqCreateComment"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/reqCreateCreateBtn"
+            android:text="@string/create"
+            android:layout_width="200dp"
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/reqCreateCancelBtn"
+            android:text="@string/cancel"
+            android:layout_width="200dp"
+            android:layout_height="40dp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
