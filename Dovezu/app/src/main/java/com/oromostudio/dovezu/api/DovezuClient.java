@@ -2,28 +2,31 @@ package com.oromostudio.dovezu.api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.sax.RootElement;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
+import com.oromostudio.dovezu.library.Constants;
 
-import cz.msebera.android.httpclient.Header;
+import java.util.List;
+
+import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 
 public class DovezuClient {
-
-    private static final String SAVE_COOKIE = "cookie";
-    private static final String SESSION = "session";
-
     private static final String BASE_URL = "https://dovezu.herokuapp.com";
+    private static final String LOCAL_URL = "http://192.168.0.106:3000";
+
     private static final String LOGIN = "/login";
     private static final String SIGNUP = "/signup";
     private static final String PROFILE = "/profile";
     private static final String LOGOUT = "/logout";
+    private static final String AUTH_CHECK = "/checkAuth";
+
+    private static final String REQUESTS_CREATE = "/api/requests";
 
 
     private static AsyncHttpClient client = new AsyncHttpClient();
@@ -32,11 +35,16 @@ public class DovezuClient {
     //**********************************************************************************************
 
     private static String absoluteUrl(String url){
-        return BASE_URL.concat(url);
+        return LOCAL_URL.concat(url);
     }
 
-    public static RequestHandle login(Context context, RequestParams params, ResponseHandlerInterface responseHandler){
-        client.setCookieStore(getEmptyCookieStore(context));
+    public static RequestHandle checkAuth(Context context, ResponseHandlerInterface responseHandler){
+        client.setCookieStore(getCookieStore(context));
+        return client.get(context, absoluteUrl(AUTH_CHECK), responseHandler);
+    }
+
+    public static RequestHandle login(Context context, PersistentCookieStore cookieStore, RequestParams params, ResponseHandlerInterface responseHandler){
+        client.setCookieStore(cookieStore);
         return client.post(context, absoluteUrl(LOGIN), params, responseHandler);
     }
 
@@ -55,6 +63,12 @@ public class DovezuClient {
         return client.get(context, absoluteUrl(LOGOUT), responseHandler);
     }
 
+    public static RequestHandle addRequest(Context context, RequestParams params, ResponseHandlerInterface responseHandler){
+        String url = absoluteUrl(REQUESTS_CREATE + "/user/" + getUserID(context));
+        client.setCookieStore(getCookieStore(context));
+        return client.post(context, url, params, responseHandler);
+    }
+
     //**********************************************************************************************
 
     private static PersistentCookieStore getCookieStore(Context context){
@@ -64,8 +78,7 @@ public class DovezuClient {
     }
 
     private static PersistentCookieStore getEmptyCookieStore(Context context){
-        PersistentCookieStore cookieStore = new PersistentCookieStore(context);
-        return cookieStore;
+        return new PersistentCookieStore(context);
     }
 
     private static BasicClientCookie getCookie(Context context){
@@ -77,28 +90,54 @@ public class DovezuClient {
     //**********************************************************************************************
 
     private static String getSession(Context context){
-        SharedPreferences pref = context.getSharedPreferences(SAVE_COOKIE, Context.MODE_PRIVATE);
-        return pref.getString(SESSION, "");
+        SharedPreferences pref = context.getSharedPreferences(Constants.SAVE_COOKIE, Context.MODE_PRIVATE);
+        return pref.getString(Constants.SESSION, "");
     }
 
     private static void setSession(Context context, String session){
-        SharedPreferences pref = context.getSharedPreferences(SAVE_COOKIE, Context.MODE_PRIVATE);
+        SharedPreferences pref = context.getSharedPreferences(Constants.SAVE_COOKIE, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();
-        edit.putString(SESSION, session);
-        edit.commit();
+        edit.putString(Constants.SESSION, session);
+        edit.apply();
+    }
+
+    private static void clearPrefs(Context context, String name){
+        SharedPreferences pref = context.getSharedPreferences(name, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        edit.clear();
+        edit.apply();
     }
 
     public static void clearSession(Context context){
-        SharedPreferences pref = context.getSharedPreferences(SAVE_COOKIE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = pref.edit();
-        edit.clear();
-        edit.commit();
+        clearPrefs(context, Constants.SAVE_COOKIE);
+        clearPrefs(context, Constants.USER_DATA);
+    }
+
+    public static Boolean checkSession(Context context){
+        SharedPreferences pref = context.getSharedPreferences(Constants.SAVE_COOKIE, Context.MODE_PRIVATE);
+        return pref.contains(Constants.SESSION);
     }
 
     public static void saveSession(Context context){
-
+        PersistentCookieStore cookieStore = getEmptyCookieStore(context);
+        SharedPreferences pref = context.getSharedPreferences(Constants.SAVE_COOKIE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = pref.edit();
+        List<Cookie> cookies = cookieStore.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().compareTo(Constants.COOKIE_NAME) == 0) {
+                if (cookie.getDomain().compareTo(Constants.DOMAIN) == 0) {
+                    ed.putString(Constants.SESSION, cookie.getValue());
+                    ed.apply();
+                    break;
+                }
+            }
+        }
     }
 
     //**********************************************************************************************
 
+    private static String getUserID(Context context){
+        SharedPreferences pref = context.getSharedPreferences(Constants.USER_DATA, Context.MODE_PRIVATE);
+        return pref.getString(Constants.USER_ID, "");
+    }
 }

@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class ProfileModel {
 
+    @SerializedName("_id")
+    @Expose
+    private String id;
+
     @SerializedName("local")
     @Expose
     private LocalModel local;
@@ -24,6 +28,14 @@ public class ProfileModel {
     @SerializedName("vkontakte")
     @Expose
     private VkontakteModel vkontakte;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public LocalModel getLocal() {
         return local;

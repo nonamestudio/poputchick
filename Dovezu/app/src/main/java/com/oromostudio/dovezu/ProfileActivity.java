@@ -133,32 +133,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void getProfile() {
 
-
-        client = new AsyncHttpClient();
-        cookieStore = new PersistentCookieStore(getApplicationContext());
-        client.setCookieStore(cookieStore);
-        sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(), MODE_PRIVATE);
-
-        if(!sharedPreferences.contains(DovezuAPI.getSaveCookie())) {
-            BasicClientCookie cookie = new BasicClientCookie("cook", "awesome");
-            cookie.setValue(sharedPreferences.getString(DovezuAPI.getSaveCookie(), ""));
-            cookieStore.addCookie(cookie);
-
-            client.get(DovezuAPI.getProfile(), new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Gson gson = new Gson();
-                    profile = gson.fromJson(response.toString(), ProfileModel.class);
-                    initViews();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
         initViews();
     }
 

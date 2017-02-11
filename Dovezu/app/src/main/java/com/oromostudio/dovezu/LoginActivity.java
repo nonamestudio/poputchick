@@ -2,8 +2,8 @@ package com.oromostudio.dovezu;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,22 +13,23 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.oromostudio.dovezu.api.DovezuAPI;
 import com.oromostudio.dovezu.api.DovezuApp_old;
 import com.oromostudio.dovezu.api.DovezuClient;
-import com.oromostudio.dovezu.models.LocalModel;
-import com.oromostudio.dovezu.models.LoginModel;
+import com.oromostudio.dovezu.library.Constants;
 import com.oromostudio.dovezu.models.ProfileModel;
 import com.oromostudio.dovezu.models.SignUpModel;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.cookie.Cookie;
+import cz.msebera.android.httpclient.cookie.MalformedCookieException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,11 +70,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button   registerBtn;
     /////////////////////////////
 
-    private SharedPreferences sharedPreferences;
-    private AsyncHttpClient client;
-    private RequestParams params;
-    private PersistentCookieStore cookieStore;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,23 +94,47 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(email.length() > 0){
                     if(password.length() > 0){
-                        LoginModel login = new LoginModel();
-                        login.setEmail(email);
-                        login.setPassword(password);
+                        RequestParams params = new RequestParams();
+                        params.put(Constants.EMAIL_FIELD, email);
+                        params.put(Constants.PASSWORD_FIELD, password);
 
-                        params = new RequestParams();
-                        params.put(DovezuAPI.getEmailField(), email);
-                        params.put(DovezuAPI.getPasswordField(), password);
+                        final PersistentCookieStore cookieStore = new PersistentCookieStore(getApplicationContext());
 
-                        DovezuClient.login(getApplicationContext(), params, new AsyncHttpResponseHandler() {
+                        DovezuClient.login(getApplicationContext(), cookieStore, params, new JsonHttpResponseHandler(){
                             @Override
-                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                Gson gson = new Gson();
+                                ProfileModel profile = gson.fromJson(response.toString(), ProfileModel.class);
+
+                                Log.d("LOGIN", response.toString());
+
+
+                                SharedPreferences pref = getSharedPreferences(Constants.USER_DATA, MODE_PRIVATE);
+                                SharedPreferences.Editor edit = pref.edit();
+                                edit.putString(Constants.USER_ID, profile.getId());
+                                edit.putString(Constants.USER_PROFILE, response.toString());
+                                edit.apply();
+
+                                SharedPreferences cookiePref = getSharedPreferences(Constants.SAVE_COOKIE, MODE_PRIVATE);
+                                SharedPreferences.Editor cookEd = cookiePref.edit();
+                                List<Cookie> cookies = cookieStore.getCookies();
+                                for (Cookie cookie : cookies) {
+                                    if (cookie.getName().compareTo(Constants.COOKIE_NAME) == 0) {
+                                        if (cookie.getDomain().compareTo(Constants.DOMAIN) == 0) {
+                                            cookEd.putString(Constants.SESSION, cookie.getValue());
+                                            cookEd.apply();
+                                            break;
+                                        }
+                                    }
+                                }
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
+                                finish();
                             }
 
                             @Override
-                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                                 Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -221,16 +241,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 String username = registerUsername.getText().toString();
-                String email    = registerEmail.getText().toString();
-                String phone    = registerPhone.getText().toString();
+                String email    = registerEmail   .getText().toString();
+                String phone    = registerPhone   .getText().toString();
                 String password = registerPassword.getText().toString();
 
                 Boolean passed = true;
 
-                if(username.length() == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noUsername), Toast.LENGTH_SHORT).show(); passed = false;}
-                if(email.length()    == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noEmail),    Toast.LENGTH_SHORT).show(); passed = false;}
-                if(phone.length()    == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noPhone),    Toast.LENGTH_SHORT).show(); passed = false;}
-                if(password.length() == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noPassword), Toast.LENGTH_SHORT).show(); passed = false;}
+                if(username.length() == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noUsername),     Toast.LENGTH_SHORT).show(); passed = false;}
+                if(email.length()    == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noEmail),        Toast.LENGTH_SHORT).show(); passed = false;}
+                if(phone.length()    == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noPhone), Toast.LENGTH_SHORT).show(); passed = false;}
+                if(password.length() == 0) {Toast.makeText(LoginActivity.this, getString(R.string.noPassword),     Toast.LENGTH_SHORT).show(); passed = false;}
 
                 //TODO: Validate email and phone number
 
@@ -238,16 +258,16 @@ public class LoginActivity extends AppCompatActivity {
                     SignUpModel signUpModel = new SignUpModel();
 
                     signUpModel.setUsername(username);
-                    signUpModel.setEmail(email);
-                    signUpModel.setPhone(phone);
+                    signUpModel.setEmail   (email);
+                    signUpModel.setPhone   (phone);
                     signUpModel.setPassword(password);
 
-                    params = new RequestParams();
+                    RequestParams params = new RequestParams();
 
-                    params.put(DovezuAPI.getUsernameField(), username);
-                    params.put(DovezuAPI.getEmailField(), email);
-                    params.put(DovezuAPI.getPhoneField(), phone);
-                    params.put(DovezuAPI.getPasswordField(), password);
+                    params.put(Constants.USERNAME_FIELD, username);
+                    params.put(Constants.EMAIL_FIELD,    email);
+                    params.put(Constants.PHONE_FIELD,    phone);
+                    params.put(Constants.PASSWORD_FIELD, password);
 
                     DovezuClient.signup(getApplicationContext(), params, new AsyncHttpResponseHandler() {
                         @Override

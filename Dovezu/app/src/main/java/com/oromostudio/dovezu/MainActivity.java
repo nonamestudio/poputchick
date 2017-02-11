@@ -13,12 +13,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.oromostudio.dovezu.adapter.TabsPagerFragmentAdapter;
@@ -55,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
     //-----------------------------------------------------------
 
 
-    private Intent intent;
-    private SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppDefault);
@@ -67,27 +66,18 @@ public class MainActivity extends AppCompatActivity {
         roboMed = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
         roboReg = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
 
+
         initToolbar();
         initTabs();
         initNavigationView();
         initFab();
+        initHeader();
+
+
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        sharedPreferences = getSharedPreferences(DovezuAPI.getSaveCookie(), MODE_PRIVATE);
-
-        if(!sharedPreferences.contains(DovezuAPI.getSaveCookie())){
-            intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void initHeader() {
+        Log.d("MAIN", "HEADER");
         View header = navigationView.getHeaderView(0);
 
         username = (TextView) header.findViewById(R.id.navigationHeaderUsername);
@@ -97,10 +87,72 @@ public class MainActivity extends AppCompatActivity {
         username.setTypeface(roboMed);
         email.setTypeface(roboReg);
         phone.setTypeface(roboReg);
-
-        getProfile();
     }
 
+    @Override
+    protected void onStart() {
+        Log.d("MAIN", "START");
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("MAIN", "PAUSE");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("MAIN", "STOP");
+    }
+
+    private void checkUserData() {
+        SharedPreferences pref = getSharedPreferences(Constants.USER_DATA, MODE_PRIVATE);
+        String profile = pref.getString(Constants.USER_PROFILE, null);
+        if(profile == null){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("MAIN", "RESUME");
+        checkUserData();
+        getProfile();
+//        SharedPreferences pref = getSharedPreferences(Constants.USER_DATA, MODE_PRIVATE);
+//        Log.d("USER DATA", pref.getString(Constants.USER_PROFILE, "EMPTY"));
+
+//        DovezuClient.checkAuth(getApplicationContext(), new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+//                Log.d("SUCCESS", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//                if(statusCode != 777){
+//                    Log.d("SUCCESS", "77777777777777777777777777777777777777777777777");
+//                    Toast.makeText(getApplicationContext(), "Login please", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                    startActivity(intent);
+//                } else{
+//                    Log.d("SUCCESS", "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+//                    Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
+//                    getProfile();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//                Log.d("CHECK_AUTH", error.getMessage());
+//                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+    }
 
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -163,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showOnceTab() {
         viewPager.setCurrentItem(Constants.TAB_ONE);
+        SharedPreferences pref = getSharedPreferences(Constants.USER_DATA, MODE_PRIVATE);
+        Log.d("USER DATA", pref.getString(Constants.USER_PROFILE, "EMPTY"));
     }
 
     private void showConstantlyTab() {
@@ -192,6 +246,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
+
+                DovezuClient.clearSession(MainActivity.this);
+
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -199,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("LOGOUT", error.getMessage());
                 Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
             }
         });
@@ -206,20 +264,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void getProfile(){
 
-        DovezuClient.profile(getApplicationContext(), new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Gson gson = new Gson();
-                ProfileModel profile = gson.fromJson(response.toString(), ProfileModel.class);
-                username.setText(profile.getLocal().getUsername());
-                email.setText(profile.getLocal().getEmail());
-                phone.setText(profile.getLocal().getPhone());
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getApplicationContext(), getString(R.string.failureProfile), Toast.LENGTH_SHORT).show();
-            }
-        });
+        Log.d("PROFILE", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        SharedPreferences pref = getSharedPreferences(Constants.USER_DATA, MODE_PRIVATE);
+        if(pref.contains(Constants.USER_PROFILE)) {
+            String jsonProfile = pref.getString(Constants.USER_PROFILE, "");
+            Gson gson = new Gson();
+            ProfileModel profile = gson.fromJson(jsonProfile, ProfileModel.class);
+            Log.d("USERNAME", profile.getLocal().getUsername());
+            username.setText(profile.getLocal().getUsername());
+            email.setText(profile.getLocal().getEmail());
+            phone.setText(profile.getLocal().getPhone());
+        }else{
+            username.setText("IBI");
+            email.setText("IIB");
+            phone.setText("ibib");
+        }
     }
 }

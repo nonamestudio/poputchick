@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,7 +15,12 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.oromostudio.dovezu.api.DovezuAPI;
+import com.oromostudio.dovezu.api.DovezuClient;
 import com.oromostudio.dovezu.library.Constants;
 import com.oromostudio.dovezu.models.RequestModel;
 
@@ -23,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 public class RequestActivity extends AppCompatActivity {
 
@@ -73,21 +81,33 @@ public class RequestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                RequestModel request = new RequestModel();
-                request.setStatus("Once");
-                request.setStartPoint(startPoint.getText().toString());
-                request.setEndPoint(endPoint.getText().toString());
-                request.setTime(time.getText().toString());
-                request.setWaitTime(Integer.toString((Integer) waitTime.getSelectedItem()));
-                request.setFreeSeats(Integer.parseInt(freeSeats.getText().toString()));
-                request.setMinPrice(Integer.parseInt(minPrice.getText().toString()));
-                request.setMaxPrice(Integer.parseInt(maxPrice.getText().toString()));
-                request.setComment(comment.getText().toString());
-                request.setAccepted(false);
+                RequestParams params = new RequestParams();
+                params.put(Constants.STATUS_FIELD,      "Once");
+                params.put(Constants.START_POINT_FIELD, startPoint.getText().toString());
+                params.put(Constants.END_POINT_FIELD,   endPoint.getText().toString());
+                params.put(Constants.FREE_SEATS_FIELD,  Integer.parseInt(freeSeats.getText().toString()));
+                params.put(Constants.TIME_FIELD,        time.getText().toString());
+                params.put(Constants.WAIT_TIME_FIELD,   Integer.toString((Integer) waitTime.getSelectedItem()));
+                params.put(Constants.MIN_PRICE_FIELD,   Integer.parseInt(minPrice.getText().toString()));
+                params.put(Constants.MAX_PRICE_FIELD,   Integer.parseInt(maxPrice.getText().toString()));
+                params.put(Constants.COMMENT_FIELD,     comment.getText().toString());
+                params.put(Constants.ACCEPTED_FIELD,    false);
 
 
 
-                finish();
+                DovezuClient.addRequest(getApplicationContext(), params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.success), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
+                        Log.d("REQUEST", error.getMessage());
+                    }
+                });
             }
         });
 
