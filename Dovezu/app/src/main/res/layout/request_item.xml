@@ -31,13 +31,15 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/reqStartPoint"/>
+                    android:id="@+id/reqStartPoint"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/reqEndPoint"/>
+                    android:id="@+id/reqEndPoint"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -48,7 +50,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2">
+                    android:layout_weight="2"
+                    android:layout_marginTop="5dp">
                     <TextView
 
                         android:layout_width="wrap_content"
@@ -61,17 +64,34 @@
                         android:text="free seats"/>
                 </LinearLayout>
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_clock"/>
+
                 <TextView
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/reqTime"/>
 
-                <TextView
-                    android:layout_weight="1"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/reqWaitTime"/>
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/reqWaitTime"/>
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" wait"/>
+                </LinearLayout>
                 </LinearLayout>
 
             <LinearLayout
@@ -84,6 +104,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/reqMinPrice"/>
                 <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-"

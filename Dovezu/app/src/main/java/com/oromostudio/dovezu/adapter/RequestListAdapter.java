@@ -34,7 +34,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         holder.endPointTV  .setText                 (data.get(position).getEndPoint());
         holder.freeSeatsTV .setText(Integer.toString(data.get(position).getFreeSeats()));
         holder.timeTV      .setText                 (data.get(position).getTime());
-        holder.waitTimeTV  .setText                 (data.get(position).getWaitTime());
+        holder.waitTimeTV  .setText                 (data.get(position).getWaitTime() + "m");
         holder.minPriceTV  .setText(String.format("%dc",data.get(position).getMinPrice()));
         holder.maxPriceTV  .setText(String.format("%dc",data.get(position).getMaxPrice()));
         holder.commentTV   .setText                 (data.get(position).getComment());
