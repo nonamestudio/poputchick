@@ -29,17 +29,17 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     @Override
     public void onBindViewHolder(RequestViewHolder holder, int position) {
-        holder.statusTV    .setText                 (data.get(position).getStatus());
+        //holder.statusTV    .setText                 (data.get(position).getStatus());
         holder.startPointTV.setText                 (data.get(position).getStartPoint());
         holder.endPointTV  .setText                 (data.get(position).getEndPoint());
         holder.freeSeatsTV .setText(Integer.toString(data.get(position).getFreeSeats()));
         holder.timeTV      .setText                 (data.get(position).getTime());
         holder.waitTimeTV  .setText                 (data.get(position).getWaitTime());
-        holder.minPriceTV  .setText(Integer.toString(data.get(position).getMinPrice()));
-        holder.maxPriceTV  .setText(Integer.toString(data.get(position).getMaxPrice()));
+        holder.minPriceTV  .setText(String.format("%dc",data.get(position).getMinPrice()));
+        holder.maxPriceTV  .setText(String.format("%dc",data.get(position).getMaxPrice()));
         holder.commentTV   .setText                 (data.get(position).getComment());
-        holder.acceptedTV  .setText(Boolean.toString(data.get(position).getAccepted()));
-        holder.partnerTV   .setText                 (data.get(position).getPartnerID());
+        //holder.acceptedTV  .setText(Boolean.toString(data.get(position).getAccepted()));
+        //holder.partnerTV   .setText                 (data.get(position).getPartnerID());
     }
 
     @Override
@@ -67,7 +67,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
             cardView = (CardView) itemView.findViewById(R.id.cardView);
 
-            statusTV     = (TextView) itemView.findViewById(R.id.reqStatus);
+            //statusTV     = (TextView) itemView.findViewById(R.id.reqStatus);
             startPointTV = (TextView) itemView.findViewById(R.id.reqStartPoint);
             endPointTV   = (TextView) itemView.findViewById(R.id.reqEndPoint);
             freeSeatsTV  = (TextView) itemView.findViewById(R.id.reqFreeSeats);
@@ -76,8 +76,8 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             minPriceTV   = (TextView) itemView.findViewById(R.id.reqMinPrice);
             maxPriceTV   = (TextView) itemView.findViewById(R.id.reqMaxPrice);
             commentTV    = (TextView) itemView.findViewById(R.id.reqComment);
-            acceptedTV   = (TextView) itemView.findViewById(R.id.reqAccepted);
-            partnerTV    = (TextView) itemView.findViewById(R.id.reqPartner);
+            //acceptedTV   = (TextView) itemView.findViewById(R.id.reqAccepted);
+            //partnerTV    = (TextView) itemView.findViewById(R.id.reqPartner);
         }
     }
 

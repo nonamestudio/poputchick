@@ -35,7 +35,7 @@ public class DovezuClient {
     //**********************************************************************************************
 
     private static String absoluteUrl(String url){
-        return LOCAL_URL.concat(url);
+        return BASE_URL.concat(url);
     }
 
     public static RequestHandle checkAuth(Context context, ResponseHandlerInterface responseHandler){
