@@ -48,17 +48,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button   loginLogin;
     //////////////////////////////
 
-    /////////////////////////////
-    //Register method choose
-    /////////////////////////////
-    private View   chooseView;
-    private Button registerLocal;
-    private Button loginFacebook;
-    private Button loginTwitter;
-    private Button loginGoogle;
-    private Button loginVkontakte;
-    /////////////////////////////
-
     ////////////////////////////
     //Register scope
     ////////////////////////////
@@ -147,94 +136,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //LocalRegister button
-        registerLocal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewFlipper.setDisplayedChild(2);
-            }
-        });
-
-        //Facebook button
-        loginFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DovezuApp_old.getAPI().loginFacebook().enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.body().toString().compareTo(getString(R.string.successFacebook)) == 0){
-                            toProfile();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
-        //Twitter button
-        loginTwitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DovezuApp_old.getAPI().loginTwitter().enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.body().toString().compareTo(getString(R.string.successTwitter)) == 0){
-                            toProfile();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
-        //Google button
-        loginGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DovezuApp_old.getAPI().loginGoogle().enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.body().toString().compareTo(getString(R.string.successGoogle)) == 0){
-                            toProfile();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
-        //Vkontakte button
-        loginVkontakte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DovezuApp_old.getAPI().loginVkontakte().enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.body().toString().compareTo(getString(R.string.successVkontakte)) == 0){
-                            toProfile();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -303,16 +204,6 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword  = (EditText) loginView.findViewById(R.id.loginPasswordET);
         loginSignup    = (TextView) loginView.findViewById(R.id.signupLink);
         loginLogin     = (Button)   loginView.findViewById(R.id.loginBtn);
-
-
-        chooseView = findViewById(R.id.chooseLayout);
-
-        registerLocal  = (Button) chooseView.findViewById(R.id.localBtn);
-        loginFacebook  = (Button) chooseView.findViewById(R.id.facebookBtn);
-        loginTwitter   = (Button) chooseView.findViewById(R.id.twitterBtn);
-        loginGoogle    = (Button) chooseView.findViewById(R.id.googleBtn);
-        loginVkontakte = (Button) chooseView.findViewById(R.id.vkontakteBtn);
-
 
         registerView = findViewById(R.id.registerLayout);
 

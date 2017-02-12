@@ -13,7 +13,6 @@
     tools:context="com.oromostudio.dovezu.LoginActivity">
 
     <include android:id="@+id/loginLayout" layout="@layout/login_layout"/>
-    <include android:id="@+id/chooseLayout" layout="@layout/register_buttons_layout"/>
     <include android:id="@+id/registerLayout" layout="@layout/register_layout"/>
 
 </ViewFlipper>
