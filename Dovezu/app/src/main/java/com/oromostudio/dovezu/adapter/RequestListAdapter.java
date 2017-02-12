@@ -10,13 +10,14 @@ import android.widget.TextView;
 import com.oromostudio.dovezu.R;
 import com.oromostudio.dovezu.models.RequestModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.RequestViewHolder> {
 
     private List<RequestModel> data;
 
-    public RequestListAdapter(List<RequestModel> data) {
+    public RequestListAdapter(List<RequestModel> data){
         this.data = data;
     }
 
@@ -28,17 +29,17 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     @Override
     public void onBindViewHolder(RequestViewHolder holder, int position) {
-        holder.statusTV.setText(data.get(position).getStatus());
-        holder.startPointTV.setText(data.get(position).getStartPoint());
-        holder.endPointTV.setText(data.get(position).getEndPoint());
-        holder.freeSeatsTV.setText(data.get(position).getFreeSeats());
-        holder.timeTV.setText(data.get(position).getTime());
-        holder.waitTimeTV.setText(data.get(position).getWaitTime());
-        holder.minPriceTV.setText(data.get(position).getMinPrice());
-        holder.maxPriceTV.setText(data.get(position).getMaxPrice());
-        holder.commentTV.setText(data.get(position).getComment());
-        holder.acceptedTV.setText(data.get(position).getAccepted().toString());
-        holder.partnerTV.setText(data.get(position).getPartnerID());
+        holder.statusTV    .setText                 (data.get(position).getStatus());
+        holder.startPointTV.setText                 (data.get(position).getStartPoint());
+        holder.endPointTV  .setText                 (data.get(position).getEndPoint());
+        holder.freeSeatsTV .setText(Integer.toString(data.get(position).getFreeSeats()));
+        holder.timeTV      .setText                 (data.get(position).getTime());
+        holder.waitTimeTV  .setText                 (data.get(position).getWaitTime());
+        holder.minPriceTV  .setText(Integer.toString(data.get(position).getMinPrice()));
+        holder.maxPriceTV  .setText(Integer.toString(data.get(position).getMaxPrice()));
+        holder.commentTV   .setText                 (data.get(position).getComment());
+        holder.acceptedTV  .setText(Boolean.toString(data.get(position).getAccepted()));
+        holder.partnerTV   .setText                 (data.get(position).getPartnerID());
     }
 
     @Override
@@ -79,4 +80,10 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             partnerTV    = (TextView) itemView.findViewById(R.id.reqPartner);
         }
     }
+
+    public void setData(List<RequestModel> data){
+        this.data = data;
+    }
+
+
 }

@@ -26,7 +26,7 @@ public class DovezuClient {
     private static final String LOGOUT = "/logout";
     private static final String AUTH_CHECK = "/checkAuth";
 
-    private static final String REQUESTS_CREATE = "/api/requests";
+    private static final String REQUESTS_API = "/api/requests";
 
 
     private static AsyncHttpClient client = new AsyncHttpClient();
@@ -64,9 +64,14 @@ public class DovezuClient {
     }
 
     public static RequestHandle addRequest(Context context, RequestParams params, ResponseHandlerInterface responseHandler){
-        String url = absoluteUrl(REQUESTS_CREATE + "/user/" + getUserID(context));
+        String url = absoluteUrl(REQUESTS_API + "/user/" + getUserID(context));
         client.setCookieStore(getCookieStore(context));
         return client.post(context, url, params, responseHandler);
+    }
+
+    public static RequestHandle getRequests(Context context, ResponseHandlerInterface responseHandler){
+        client.setCookieStore(getCookieStore(context));
+        return client.get(context, absoluteUrl(REQUESTS_API), responseHandler);
     }
 
     //**********************************************************************************************

@@ -3,6 +3,7 @@ package com.oromostudio.dovezu;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,16 +20,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.oromostudio.dovezu.adapter.TabsPagerFragmentAdapter;
-import com.oromostudio.dovezu.api.DovezuAPI;
 import com.oromostudio.dovezu.api.DovezuClient;
 import com.oromostudio.dovezu.library.Constants;
 import com.oromostudio.dovezu.models.ProfileModel;
+import com.oromostudio.dovezu.models.RequestModel;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Typeface roboReg;
     //-----------------------------------------------------------
 
+    TabsPagerFragmentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initTabs() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        TabsPagerFragmentAdapter adapter = new TabsPagerFragmentAdapter(getApplicationContext(), getSupportFragmentManager());
+        adapter = new TabsPagerFragmentAdapter(getApplicationContext(), getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-
+        updateRequests();
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -215,8 +219,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showOnceTab() {
         viewPager.setCurrentItem(Constants.TAB_ONE);
-        SharedPreferences pref = getSharedPreferences(Constants.USER_DATA, MODE_PRIVATE);
-        Log.d("USER DATA", pref.getString(Constants.USER_PROFILE, "EMPTY"));
+        updateRequests();
+        Log.d("ONCE TAB", Integer.toString(viewPager.getAdapter().getCount()));
     }
 
     private void showConstantlyTab() {
@@ -279,5 +283,22 @@ public class MainActivity extends AppCompatActivity {
             email.setText("IIB");
             phone.setText("ibib");
         }
+    }
+
+    private void updateRequests(){
+        DovezuClient.getRequests(getApplicationContext(), new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<RequestModel>>(){}.getType();
+                List<RequestModel> requests = gson.fromJson(response.toString(), listType);
+                adapter.setData(requests);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Toast.makeText(getApplicationContext(), getString(R.string.failure), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

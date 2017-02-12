@@ -10,14 +10,19 @@ import com.oromostudio.dovezu.fragment.AbstractTabFragment;
 import com.oromostudio.dovezu.fragment.ConstantlyTripFragment;
 import com.oromostudio.dovezu.fragment.IntercityTripFragment;
 import com.oromostudio.dovezu.fragment.OnceTripFragment;
+import com.oromostudio.dovezu.models.RequestModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TabsPagerFragmentAdapter extends FragmentPagerAdapter{
 
     private Map<Integer, AbstractTabFragment> tabs;
     private Context context;
+    private OnceTripFragment onceTripFragment;
+    private ConstantlyTripFragment constantlyTripFragment;
+    private IntercityTripFragment intercityTripFragment;
 
     public TabsPagerFragmentAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -42,9 +47,21 @@ public class TabsPagerFragmentAdapter extends FragmentPagerAdapter{
     }
 
     private void initTabs() {
+
+        onceTripFragment = OnceTripFragment.getInstance(context);
+        constantlyTripFragment = ConstantlyTripFragment.getInstance(context);
+        intercityTripFragment = IntercityTripFragment.getInstance(context);
+
+
         tabs = new HashMap<>();
-        tabs.put(0, OnceTripFragment.getInstance(context));
-        tabs.put(1, ConstantlyTripFragment.getInstance(context));
-        tabs.put(2, IntercityTripFragment.getInstance(context));
+        tabs.put(0, onceTripFragment);
+        tabs.put(1, constantlyTripFragment);
+        tabs.put(2, intercityTripFragment);
+    }
+
+    public void setData(List<RequestModel> data){
+        onceTripFragment.refreshData(data);
+        //constantlyTripFragment.refreshData(data);
+        //intercityTripFragment.refreshData(data);
     }
 }
