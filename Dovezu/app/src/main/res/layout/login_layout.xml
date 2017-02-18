@@ -7,6 +7,7 @@
         android:layout_width="242dp"
         android:layout_height="242dp"
         android:text=""
+        android:background="@drawable/login_img_256"
         android:layout_centerHorizontal="true"
         android:id="@+id/loginWindowName"/>
 
